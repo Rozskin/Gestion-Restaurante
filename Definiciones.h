@@ -1,23 +1,15 @@
 #ifndef DEFINICIONES_H
 #define DEFINICIONES_H
-
 #include <iostream>
 #include <string>
-
 using namespace std;
 
-// Estructuras base iniciales para futuros modulos
-// Las dejamos declaradas para no tener problemas de enlazado luego
+// Detalle de un pedido: lista enlazada de productos dentro de un pedido
 struct DetallePedido {
-    int cantidad;
     int idProducto;
+    int cantidad;
     float subtotal;
-};
-
-struct PedidoBase {
-    int id;
-    string tipo; // Salon o Delivery
-    string estado;
+    DetallePedido* sig;
 };
 
 #endif
