@@ -122,9 +122,12 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\ColaEspera.cpp" />
     <ClCompile Include="..\Historial.cpp" />
     <ClCompile Include="..\Mesa.cpp" />
     <ClCompile Include="..\Pedido.cpp" />
@@ -136,6 +139,7 @@
     <ClCompile Include="PanelOperaciones.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ColaEspera.h" />
     <ClInclude Include="..\Definiciones.h" />
     <ClInclude Include="..\Historial.h" />
     <ClInclude Include="..\Mesa.h" />
