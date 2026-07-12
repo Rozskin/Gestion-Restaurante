@@ -19,3 +19,9 @@ Release/
 # Archivos de sistema
 Thumbs.db
 Desktop.ini
+/Usuarios.txt
+/Reservas.txt
+/productos.txt
+/Pedido.txt
+/Mesas.txt
+/Historial.txt
