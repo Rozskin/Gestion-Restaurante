@@ -43,4 +43,7 @@ bool cancelarPedido(TpPedido &frente, TpPedido &listaActivos, int idPedido);
 // Se agrego: muestra los pedidos que ya salieron de la cola y estan en preparacion
 void mostrarPedidosActivos(TpPedido listaActivos);
 
+void guardarPedidos(TpPedido pila);
+TpPedido cargarPedidos(TpPedido frente, TpPedido &final);
+
 #endif

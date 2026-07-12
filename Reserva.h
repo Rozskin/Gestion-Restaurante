@@ -19,5 +19,7 @@ void mostrarReservas(TpReserva lista);
 
 // Se agrego: cancela una reserva y libera la mesa asociada
 TpReserva cancelarReserva(TpReserva listaReservas, TpMesa listaMesas, int idRes);
+void guardarReservas(TpReserva lista);
+TpReserva cargarReservas(TpReserva lista, TpMesa listaMesas);
 
 #endif

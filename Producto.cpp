@@ -1,4 +1,6 @@
 #include "Producto.h"
+#include <fstream>
+#include <sstream>
 
 TpProducto agregarProducto(TpProducto lista, int id, string nom, int stock, float precio) {
     TpProducto nuevo = new(struct nodoProducto);
@@ -111,4 +113,34 @@ TpProducto platoPedido(TpProducto lista) {
         p = p->sig;
     }
     return menor;
+}
+
+void guardarProductos(TpProducto lista){
+    ofstream archivo("productos.txt");
+    TpProducto p = lista;
+    while(p != NULL){
+        archivo << p->id << ";" << p->nombre << ";" << p->stock << ";" << p->precio << ";" << p->contadorVentas << endl;
+        p = p->sig;
+    }
+    archivo.close();
+}
+
+TpProducto cargarProductos(TpProducto lista){
+    ifstream archivo("productos.txt");
+    if(!archivo.is_open()) return lista;
+    string linea;
+    while(getline(archivo,linea)){
+        stringstream ss(linea);
+        string sid, nombre, sstock, sprecio, scont;
+        getline(ss,sid,';'); getline(ss,nombre,';'); getline(ss,sstock,';'); 
+        getline(ss,sprecio,';'); getline(ss,scont);
+        
+        lista = agregarProducto(lista, stoi(sid), nombre, stoi(sstock), stof(sprecio));
+        // Recuperamos el contador de ventas
+        TpProducto temp = lista;
+        while(temp->sig != NULL) temp = temp->sig;
+        temp->contadorVentas = stoi(scont);
+    }
+    archivo.close();
+    return lista;
 }

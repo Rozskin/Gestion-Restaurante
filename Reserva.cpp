@@ -1,4 +1,6 @@
 #include "Reserva.h"
+#include <fstream>
+#include <sstream>
 
 TpReserva crearReserva(TpReserva listaReservas, TpMesa listaMesas, int idRes, string f, string h, int numP, int idMesa) {
     // Primero validamos la regla de negocio
@@ -65,4 +67,29 @@ TpReserva cancelarReserva(TpReserva listaReservas, TpMesa listaMesas, int idRes)
     }
     cout << ">> No se encontro la reserva #" << idRes << ".\n";
     return listaReservas;
+}
+
+void guardarReservas(TpReserva lista){
+    ofstream archivo("Reservas.txt");
+    TpReserva p = lista;
+    while(p != NULL){
+        archivo << p->id << ";" << p->fecha << ";" << p->hora << ";" << p->numPersonas << ";" << p->idMesa << endl;
+        p = p->sig;
+    }
+    archivo.close();
+}
+
+TpReserva cargarReservas(TpReserva lista, TpMesa listaMesas){
+    ifstream archivo("Reservas.txt");
+    if(!archivo.is_open()) return lista;
+    string linea;
+    while(getline(archivo, linea)){
+        stringstream ss(linea);
+        string sid, fecha, hora, snumPersonas, sidMesa;
+        getline(ss, sid, ';'); getline(ss, fecha, ';'); getline(ss, hora, ';'); 
+        getline(ss, snumPersonas, ';'); getline(ss, sidMesa);
+        lista = crearReserva(lista, listaMesas, stoi(sid), fecha, hora, stoi(snumPersonas), stoi(sidMesa));
+    }
+    archivo.close();
+    return lista;
 }

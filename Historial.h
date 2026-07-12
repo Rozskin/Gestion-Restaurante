@@ -15,5 +15,7 @@ struct nodoHistorial {
 void registrarAccion(TpHistorial &pila, int id, string desc);
 void deshacerAccion(TpHistorial &pila);
 void mostrarHistorial(TpHistorial pila);
+void guardarHistorial(TpHistorial pila);
+TpHistorial cargarHistorial(TpHistorial pila);
 
 #endif

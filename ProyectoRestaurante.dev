@@ -1,4 +1,4 @@
-[Project]
+﻿[Project]
 FileName=ProyectoRestaurante.dev
 Name=ProyectoRestaurante
 Type=1
@@ -28,8 +28,8 @@ Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
-UnitCount=14
+CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+UnitCount=16
 
 [VersionInfo]
 Major=1
@@ -182,6 +182,26 @@ BuildCmd=
 
 [Unit14]
 FileName=Pedido.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit15]
+FileName=ColaEspera.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit16]
+FileName=ColaEspera.cpp
 CompileCpp=1
 Folder=
 Compile=1

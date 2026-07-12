@@ -18,5 +18,8 @@ struct nodoUsuario {
 TpUsuario registrarUsuario(TpUsuario lista, int id, string nom, string pwd, string rol);
 TpUsuario login(TpUsuario lista, string nom, string pwd);
 void mostrarUsuarios(TpUsuario lista); // funcion de apoyo para el debug
+void guardarUsuarios(TpUsuario lista);
+TpUsuario cargarUsuarios(TpUsuario lista);
+
 
 #endif	

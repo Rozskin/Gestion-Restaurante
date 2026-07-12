@@ -1,4 +1,6 @@
 #include "Usuario.h"
+#include <fstream>
+#include <sstream>
 
 TpUsuario registrarUsuario(TpUsuario lista, int id, string nom, string pwd, string rol) {
     TpUsuario nuevo = new(struct nodoUsuario);
@@ -44,4 +46,28 @@ void mostrarUsuarios(TpUsuario lista) {
         cout<<"ID: "<<p->id<<" - User: "<<p->nombre<<" - Rol: "<<p->rol<<"\n";
         p= p->sig;
     }
+}
+
+void guardarUsuarios(TpUsuario lista){
+    ofstream archivo("Usuarios.txt");
+    TpUsuario p = lista;
+    while(p != NULL){
+        archivo << p->id << ";" << p->nombre << ";" << p->password << ";" << p->rol << endl;
+        p = p->sig;
+    }
+    archivo.close();
+}
+
+TpUsuario cargarUsuarios(TpUsuario lista){
+    ifstream archivo("Usuarios.txt");
+    if(!archivo.is_open()) return lista; // Previene errores si no existe el txt
+    string linea;
+    while(getline(archivo,linea)){
+        stringstream ss(linea);
+        string sid, nombre, password, rol;
+        getline(ss,sid,';'); getline(ss,nombre,';'); getline(ss,password,';'); getline(ss,rol);
+        lista = registrarUsuario(lista, stoi(sid), nombre, password, rol);
+    }
+    archivo.close();
+    return lista;
 }

@@ -1,4 +1,6 @@
 #include "Mesa.h"
+#include <fstream>
+#include <sstream>
 
 TpMesa agregarMesa(TpMesa lista, int id, int cap) {
     TpMesa nuevo = new(struct nodoMesa);
@@ -57,4 +59,33 @@ void cambiarEstadoMesa(TpMesa lista, int id, string nuevoEstado) {
         }
         p=p->sig;
     }
+}
+
+void guardarMesas(TpMesa lista){
+    ofstream archivo("Mesas.txt");
+    TpMesa p = lista;
+    while(p != NULL){
+        archivo << p->id << ";" << p->capacidad << ";" << p->estado << endl;
+        p = p->sig;
+    }
+    archivo.close();
+}
+
+TpMesa cargarMesas(TpMesa lista){
+    ifstream archivo("Mesas.txt");
+    if(!archivo.is_open()) return lista;
+    string linea;
+    while(getline(archivo,linea)){
+        stringstream ss(linea);
+        string sid, scapacidad, estado;
+        getline(ss,sid,';'); getline(ss,scapacidad,';'); getline(ss,estado);
+        lista = agregarMesa(lista, stoi(sid), stoi(scapacidad));
+        
+        // La mesa nueva quedó al final, le reponemos el estado guardado
+        TpMesa p = lista;
+        while(p->sig != NULL) p = p->sig;
+        p->estado = estado;
+    }
+    archivo.close();
+    return lista;
 }

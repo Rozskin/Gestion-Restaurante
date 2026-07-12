@@ -1,5 +1,7 @@
 #include "Pedido.h"
 #include "Mesa.h" // Se agrego para poder llamar cambiarEstadoMesa() al entregar (Regla N.9)
+#include <fstream>
+#include <sstream>
 
 // Encolar (Push_back)
 // Se simplfico la firma: se elimino tipo y distanciaKm porque ya no hay Delivery
@@ -143,5 +145,38 @@ void mostrarPedidosActivos(TpPedido listaActivos) {
              << " | Estado: " << p->estado << "\n";
         p = p->sig;
     }
+}
+
+void guardarPedidos(TpPedido pila){
+    ofstream archivo("Pedido.txt");
+    TpPedido p = pila;
+    while(p != NULL){
+        archivo << p->id << ";" << p->idMesa << ";" << p->estado << ";" 
+                << p->subtotal << ";" << p->igv << ";" << p->total << endl;
+        p = p->sig;
+    }
+    archivo.close();
+}
+
+TpPedido cargarPedidos(TpPedido frente, TpPedido &final){
+    ifstream archivo("Pedido.txt");
+    if(!archivo.is_open()) return frente;
+    string linea;
+    while(getline(archivo, linea)){
+        stringstream ss(linea);
+        string sid, sidMesa, sestado, ssubtotal, sigv, stotal;
+        getline(ss, sid, ';'); getline(ss, sidMesa, ';'); getline(ss, sestado, ';');
+        getline(ss, ssubtotal, ';'); getline(ss, sigv, ';'); getline(ss, stotal);
+
+        // Reconstruimos el pedido con las reglas nuevas
+        encolarPedido(frente, final, stoi(sid), stoi(sidMesa), stof(ssubtotal));
+        
+        // Pisamos los datos de estado para recuperarlos exactamente como estaban
+        final->estado = sestado;
+        final->igv = stof(sigv);
+        final->total = stof(stotal);
+    }
+    archivo.close();
+    return frente;
 }
 

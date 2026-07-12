@@ -26,4 +26,7 @@ TpProducto eliminarProducto(TpProducto lista, int id);
 // Se agrego: funciones de reporte de platos
 TpProducto platoMasPedido(TpProducto lista);
 TpProducto platoPedido(TpProducto lista); // Se agrego: retorna el plato menos pedido
+
+void guardarProductos(TpProducto lista);
+TpProducto cargarProductos(TpProducto lista);
 #endif	

@@ -17,5 +17,7 @@ TpMesa agregarMesa(TpMesa lista, int id, int cap);
 void mostrarMesas(TpMesa lista);
 bool verificarMesaLibre(TpMesa lista, int id, int numPersonas);
 void cambiarEstadoMesa(TpMesa lista, int id, string nuevoEstado);
+void guardarMesas(TpMesa lista);
+TpMesa cargarMesas(TpMesa lista);
 
 #endif
