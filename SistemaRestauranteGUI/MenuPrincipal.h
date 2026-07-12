@@ -77,7 +77,7 @@ namespace SistemaRestauranteGUI {
 		MenuPrincipal(void)
 		{
 			InitializeComponent();
-			
+
 			listaUsuarios = NULL;
 			logueado = NULL;
 			listaProductos = NULL;
@@ -91,21 +91,43 @@ namespace SistemaRestauranteGUI {
 			finalEspera = NULL;
 			listaPedidosActivos = NULL;
 
-			listaUsuarios = registrarUsuario(listaUsuarios, 1, "admin", "admin123", "Administrador");
-			listaUsuarios = registrarUsuario(listaUsuarios, 3, "diego", "qwer", "Trabajador");
+			//CARGAMOS DATOS DE LOS .TXT
+			pilaAcciones = cargarHistorial(pilaAcciones);
 
-			listaProductos = agregarProducto(listaProductos, 101, "Combo Hamburguesa Big Boss", 20, 18.50f);
-			listaProductos = agregarProducto(listaProductos, 102, "Pollo Frito Crujiente KFC", 15, 21.90f);
-			listaProductos = agregarProducto(listaProductos, 103, "Mostrito con Pollo a la Brasa", 0, 19.00f);
+			// Truco temporal para cargarPedidos por referencia
+			TpPedido tempFrente = frenteCocina;
+			TpPedido tempFinal = finalCocina;
+			tempFrente = cargarPedidos(tempFrente, tempFinal);
+			frenteCocina = tempFrente;
+			finalCocina = tempFinal;
 
-			listaMesas = agregarMesa(listaMesas, 1, 2);
-			listaMesas = agregarMesa(listaMesas, 2, 4);
-			listaMesas = agregarMesa(listaMesas, 3, 4);
-			listaMesas = agregarMesa(listaMesas, 4, 6);
-			listaMesas = agregarMesa(listaMesas, 5, 6);
-			listaMesas = agregarMesa(listaMesas, 6, 8);
-			listaMesas = agregarMesa(listaMesas, 7, 2);
-			listaMesas = agregarMesa(listaMesas, 8, 10);
+			listaUsuarios = cargarUsuarios(listaUsuarios);
+			listaProductos = cargarProductos(listaProductos);
+			listaMesas = cargarMesas(listaMesas);
+			listaReservas = cargarReservas(listaReservas, listaMesas);
+
+			//(Solo si los .txt están vacíos)
+			if (listaUsuarios == NULL) {
+				listaUsuarios = registrarUsuario(listaUsuarios, 1, "admin", "admin123", "Administrador");
+				listaUsuarios = registrarUsuario(listaUsuarios, 3, "diego", "qwer", "Trabajador");
+			}
+
+			if (listaProductos == NULL) {
+				listaProductos = agregarProducto(listaProductos, 101, "Combo Hamburguesa Big Boss", 20, 18.50f);
+				listaProductos = agregarProducto(listaProductos, 102, "Pollo Frito Crujiente KFC", 15, 21.90f);
+				listaProductos = agregarProducto(listaProductos, 103, "Mostrito con Pollo a la Brasa", 0, 19.00f);
+			}
+
+			if (listaMesas == NULL) {
+				listaMesas = agregarMesa(listaMesas, 1, 2);
+				listaMesas = agregarMesa(listaMesas, 2, 4);
+				listaMesas = agregarMesa(listaMesas, 3, 4);
+				listaMesas = agregarMesa(listaMesas, 4, 6);
+				listaMesas = agregarMesa(listaMesas, 5, 6);
+				listaMesas = agregarMesa(listaMesas, 6, 8);
+				listaMesas = agregarMesa(listaMesas, 7, 2);
+				listaMesas = agregarMesa(listaMesas, 8, 10);
+			}
 		}
 	private:
 		void cargarMenuPublico() {
@@ -156,6 +178,17 @@ namespace SistemaRestauranteGUI {
 			{
 				delete components;
 			}
+		}
+
+		//GUARDA EL TXT AL CERRAR LA VENTANA 
+		virtual void OnFormClosing(System::Windows::Forms::FormClosingEventArgs^ e) override {
+			guardarProductos(listaProductos);
+			guardarHistorial(pilaAcciones);
+			guardarPedidos(frenteCocina);
+			guardarMesas(listaMesas);
+			guardarReservas(listaReservas);
+			guardarUsuarios(listaUsuarios);
+			Form::OnFormClosing(e); // Llama al cierre normal de Windows
 		}
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
@@ -491,11 +524,33 @@ namespace SistemaRestauranteGUI {
 			String^ nombreBienvenida = msclr::interop::marshal_as<String^>(logueado->nombre);
 			MessageBox::Show("Bienvenido, " + nombreBienvenida, "Acceso Concedido");
 
-			// Aquí ocultaríamos el login y abriríamos el panel de operaciones
-			this->Hide(); 
+			this->Hide();
 			PanelOperaciones^ panel = gcnew PanelOperaciones(logueado, listaUsuarios, listaProductos, listaMesas, frenteCocina, finalCocina, pilaAcciones, listaReservas, frenteEspera, finalEspera, listaPedidosActivos);
 			panel->ShowDialog();
 			this->Show();
+
+			//RECARGAR DATOS DESDE LOS .TXT AL VOLVER 
+			//Vaciamos la memoria vieja
+			listaUsuarios = NULL; listaProductos = NULL; listaMesas = NULL;
+			frenteCocina = NULL; finalCocina = NULL; pilaAcciones = NULL; listaReservas = NULL;
+
+			//Volvemos a leer de los .txt actualizados
+			pilaAcciones = cargarHistorial(pilaAcciones);
+			
+			//Usamos temporal para cargarPedidos por referencia
+			TpPedido tempFrente = frenteCocina;
+			TpPedido tempFinal = finalCocina;
+			tempFrente = cargarPedidos(tempFrente, tempFinal);
+			frenteCocina = tempFrente;
+			finalCocina = tempFinal;
+
+			listaUsuarios = cargarUsuarios(listaUsuarios);
+			listaProductos = cargarProductos(listaProductos);
+			listaMesas = cargarMesas(listaMesas);
+			listaReservas = cargarReservas(listaReservas, listaMesas);
+
+			cargarMenuPublico(); // Actualizamos la tabla visual
+
 			txtUsuario->Clear();
 			txtPass->Clear();
 		}

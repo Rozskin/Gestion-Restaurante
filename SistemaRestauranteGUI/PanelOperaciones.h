@@ -456,6 +456,17 @@ private: System::Windows::Forms::Label^ label24;
 				delete components;
 			}
 		}
+
+		//GUARDA EN TXT AL CERRAR EL PANEL DE OPERACIONES
+		virtual void OnFormClosing(System::Windows::Forms::FormClosingEventArgs^ e) override {
+			guardarProductos(lstProd);
+			guardarHistorial(pilaHist);
+			guardarPedidos(frenteCocina);
+			guardarMesas(lstMesas);
+			guardarReservas(lstRes);
+			guardarUsuarios(lstUsr);
+			Form::OnFormClosing(e); // Llama al cierre normal de Windows
+		}
 	private: System::Windows::Forms::TabControl^ tabControl1;
 	protected:
 
