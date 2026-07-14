@@ -153,6 +153,15 @@ private: System::Windows::Forms::TextBox^ txtNuevoNomPlato;
 private: System::Windows::Forms::Label^ label22;
 private: System::Windows::Forms::Label^ label23;
 private: System::Windows::Forms::Label^ label24;
+private: System::Windows::Forms::Label^ label28;
+private: System::Windows::Forms::Button^ btnLiberarMesa;
+
+private: System::Windows::Forms::TextBox^ txtMesaLiberar;
+
+private: System::Windows::Forms::Label^ label30;
+private: System::Windows::Forms::Label^ label29;
+private: System::Windows::Forms::Label^ label31;
+private: System::Windows::Forms::Label^ label32;
 
 
 
@@ -199,6 +208,32 @@ private: System::Windows::Forms::Label^ label24;
 				tabControl1->TabPages->Remove(tabPage5);
 				tabControl1->TabPages->Remove(tabPage6);
 			}*/
+
+
+			//Continua desde el último valor guardado
+			TpReserva r = lstRes;
+			while (r != NULL) {
+				if (r->id >= idReservaActual) idReservaActual = r->id + 1;
+				r = r->sig;
+			}
+
+			TpHistorial h = pilaHist;
+			while (h != NULL) {
+				if (h->idAccion >= idAccGlobal) idAccGlobal = h->idAccion + 1;
+				h = h->sig;
+			}
+
+			TpPedido pC = frenteCocina;
+			while (pC != NULL) {
+				if (pC->id >= idPedGlobal) idPedGlobal = pC->id + 1;
+				pC = pC->sig;
+			}
+
+			TpPedido pA = listaPedidosActivos;
+			while (pA != NULL) {
+				if (pA->id >= idPedGlobal) idPedGlobal = pA->id + 1;
+				pA = pA->sig;
+			}
 		}
 	private:
 		void cargarMenuDigital() {
@@ -526,6 +561,11 @@ private: System::Windows::Forms::Label^ label24;
 			this->dgvMesas = (gcnew System::Windows::Forms::DataGridView());
 			this->dgvColaEspera = (gcnew System::Windows::Forms::DataGridView());
 			this->panel5 = (gcnew System::Windows::Forms::Panel());
+			this->btnLiberarMesa = (gcnew System::Windows::Forms::Button());
+			this->txtMesaLiberar = (gcnew System::Windows::Forms::TextBox());
+			this->label30 = (gcnew System::Windows::Forms::Label());
+			this->label29 = (gcnew System::Windows::Forms::Label());
+			this->label28 = (gcnew System::Windows::Forms::Label());
 			this->btnAtenderEspera = (gcnew System::Windows::Forms::Button());
 			this->txtMesaAsignar = (gcnew System::Windows::Forms::TextBox());
 			this->label13 = (gcnew System::Windows::Forms::Label());
@@ -584,6 +624,8 @@ private: System::Windows::Forms::Label^ label24;
 			this->btnGenerarReporte = (gcnew System::Windows::Forms::Button());
 			this->tabPageUsuarios = (gcnew System::Windows::Forms::TabPage());
 			this->dgvUsuarios = (gcnew System::Windows::Forms::DataGridView());
+			this->label31 = (gcnew System::Windows::Forms::Label());
+			this->label32 = (gcnew System::Windows::Forms::Label());
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgvMenu))->BeginInit();
@@ -831,6 +873,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// panel1
 			// 
+			this->panel1->Controls->Add(this->label31);
 			this->panel1->Controls->Add(this->btnProcesarInv);
 			this->panel1->Controls->Add(this->txtCantProd);
 			this->panel1->Controls->Add(this->label3);
@@ -846,7 +889,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// btnProcesarInv
 			// 
-			this->btnProcesarInv->Location = System::Drawing::Point(122, 126);
+			this->btnProcesarInv->Location = System::Drawing::Point(126, 156);
 			this->btnProcesarInv->Name = L"btnProcesarInv";
 			this->btnProcesarInv->Size = System::Drawing::Size(75, 23);
 			this->btnProcesarInv->TabIndex = 7;
@@ -856,7 +899,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// txtCantProd
 			// 
-			this->txtCantProd->Location = System::Drawing::Point(122, 48);
+			this->txtCantProd->Location = System::Drawing::Point(126, 78);
 			this->txtCantProd->Name = L"txtCantProd";
 			this->txtCantProd->Size = System::Drawing::Size(100, 20);
 			this->txtCantProd->TabIndex = 1;
@@ -864,7 +907,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(75, 88);
+			this->label3->Location = System::Drawing::Point(79, 118);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(43, 13);
 			this->label3->TabIndex = 6;
@@ -872,7 +915,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// txtIdProd
 			// 
-			this->txtIdProd->Location = System::Drawing::Point(122, 12);
+			this->txtIdProd->Location = System::Drawing::Point(126, 42);
 			this->txtIdProd->Name = L"txtIdProd";
 			this->txtIdProd->Size = System::Drawing::Size(100, 20);
 			this->txtIdProd->TabIndex = 0;
@@ -881,7 +924,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			this->cmbAccionInv->FormattingEnabled = true;
 			this->cmbAccionInv->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Descontar por Venta", L"Reabastecer" });
-			this->cmbAccionInv->Location = System::Drawing::Point(122, 85);
+			this->cmbAccionInv->Location = System::Drawing::Point(126, 115);
 			this->cmbAccionInv->Name = L"cmbAccionInv";
 			this->cmbAccionInv->Size = System::Drawing::Size(100, 21);
 			this->cmbAccionInv->TabIndex = 5;
@@ -889,7 +932,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(49, 15);
+			this->label1->Location = System::Drawing::Point(53, 45);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(67, 13);
 			this->label1->TabIndex = 2;
@@ -898,7 +941,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(5, 51);
+			this->label2->Location = System::Drawing::Point(9, 81);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(113, 13);
 			this->label2->TabIndex = 3;
@@ -937,6 +980,11 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// panel5
 			// 
+			this->panel5->Controls->Add(this->btnLiberarMesa);
+			this->panel5->Controls->Add(this->txtMesaLiberar);
+			this->panel5->Controls->Add(this->label30);
+			this->panel5->Controls->Add(this->label29);
+			this->panel5->Controls->Add(this->label28);
 			this->panel5->Controls->Add(this->btnAtenderEspera);
 			this->panel5->Controls->Add(this->txtMesaAsignar);
 			this->panel5->Controls->Add(this->label13);
@@ -945,6 +993,54 @@ private: System::Windows::Forms::Label^ label24;
 			this->panel5->Name = L"panel5";
 			this->panel5->Size = System::Drawing::Size(200, 506);
 			this->panel5->TabIndex = 2;
+			// 
+			// btnLiberarMesa
+			// 
+			this->btnLiberarMesa->Location = System::Drawing::Point(46, 215);
+			this->btnLiberarMesa->Name = L"btnLiberarMesa";
+			this->btnLiberarMesa->Size = System::Drawing::Size(113, 23);
+			this->btnLiberarMesa->TabIndex = 15;
+			this->btnLiberarMesa->Text = L"Liberar Mesa";
+			this->btnLiberarMesa->UseVisualStyleBackColor = true;
+			this->btnLiberarMesa->Click += gcnew System::EventHandler(this, &PanelOperaciones::btnLiberarMesa_Click);
+			// 
+			// txtMesaLiberar
+			// 
+			this->txtMesaLiberar->Location = System::Drawing::Point(90, 173);
+			this->txtMesaLiberar->Name = L"txtMesaLiberar";
+			this->txtMesaLiberar->Size = System::Drawing::Size(100, 20);
+			this->txtMesaLiberar->TabIndex = 14;
+			// 
+			// label30
+			// 
+			this->label30->AutoSize = true;
+			this->label30->Location = System::Drawing::Point(6, 176);
+			this->label30->Name = L"label30";
+			this->label30->Size = System::Drawing::Size(80, 13);
+			this->label30->TabIndex = 13;
+			this->label30->Text = L"Mesa a Liberar:";
+			// 
+			// label29
+			// 
+			this->label29->AutoSize = true;
+			this->label29->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label29->Location = System::Drawing::Point(6, 142);
+			this->label29->Name = L"label29";
+			this->label29->Size = System::Drawing::Size(111, 18);
+			this->label29->TabIndex = 12;
+			this->label29->Text = L"Liberar Mesa:";
+			// 
+			// label28
+			// 
+			this->label28->AutoSize = true;
+			this->label28->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label28->Location = System::Drawing::Point(6, 10);
+			this->label28->Name = L"label28";
+			this->label28->Size = System::Drawing::Size(120, 18);
+			this->label28->TabIndex = 11;
+			this->label28->Text = L"Enviar a Mesa:";
 			// 
 			// btnAtenderEspera
 			// 
@@ -995,6 +1091,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// panel2
 			// 
+			this->panel2->Controls->Add(this->label32);
 			this->panel2->Controls->Add(this->btnCancelarReserva);
 			this->panel2->Controls->Add(this->txtIdReservaCancelar);
 			this->panel2->Controls->Add(this->label19);
@@ -1016,7 +1113,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// btnCancelarReserva
 			// 
-			this->btnCancelarReserva->Location = System::Drawing::Point(68, 279);
+			this->btnCancelarReserva->Location = System::Drawing::Point(68, 309);
 			this->btnCancelarReserva->Name = L"btnCancelarReserva";
 			this->btnCancelarReserva->Size = System::Drawing::Size(113, 41);
 			this->btnCancelarReserva->TabIndex = 13;
@@ -1026,7 +1123,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// txtIdReservaCancelar
 			// 
-			this->txtIdReservaCancelar->Location = System::Drawing::Point(131, 243);
+			this->txtIdReservaCancelar->Location = System::Drawing::Point(131, 273);
 			this->txtIdReservaCancelar->Name = L"txtIdReservaCancelar";
 			this->txtIdReservaCancelar->Size = System::Drawing::Size(100, 20);
 			this->txtIdReservaCancelar->TabIndex = 12;
@@ -1034,7 +1131,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label19
 			// 
 			this->label19->AutoSize = true;
-			this->label19->Location = System::Drawing::Point(19, 246);
+			this->label19->Location = System::Drawing::Point(19, 276);
 			this->label19->Name = L"label19";
 			this->label19->Size = System::Drawing::Size(75, 13);
 			this->label19->TabIndex = 11;
@@ -1045,7 +1142,7 @@ private: System::Windows::Forms::Label^ label24;
 			this->label18->AutoSize = true;
 			this->label18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label18->Location = System::Drawing::Point(6, 215);
+			this->label18->Location = System::Drawing::Point(6, 245);
 			this->label18->Name = L"label18";
 			this->label18->Size = System::Drawing::Size(147, 18);
 			this->label18->TabIndex = 10;
@@ -1053,7 +1150,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(68, 150);
+			this->button2->Location = System::Drawing::Point(68, 180);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(113, 41);
 			this->button2->TabIndex = 9;
@@ -1063,14 +1160,14 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// txtIdMesa
 			// 
-			this->txtIdMesa->Location = System::Drawing::Point(131, 109);
+			this->txtIdMesa->Location = System::Drawing::Point(131, 139);
 			this->txtIdMesa->Name = L"txtIdMesa";
 			this->txtIdMesa->Size = System::Drawing::Size(100, 20);
 			this->txtIdMesa->TabIndex = 8;
 			// 
 			// txtNumPersonas
 			// 
-			this->txtNumPersonas->Location = System::Drawing::Point(131, 79);
+			this->txtNumPersonas->Location = System::Drawing::Point(131, 109);
 			this->txtNumPersonas->Name = L"txtNumPersonas";
 			this->txtNumPersonas->Size = System::Drawing::Size(100, 20);
 			this->txtNumPersonas->TabIndex = 7;
@@ -1078,7 +1175,7 @@ private: System::Windows::Forms::Label^ label24;
 			// dtpHora
 			// 
 			this->dtpHora->Format = System::Windows::Forms::DateTimePickerFormat::Time;
-			this->dtpHora->Location = System::Drawing::Point(68, 46);
+			this->dtpHora->Location = System::Drawing::Point(68, 76);
 			this->dtpHora->Name = L"dtpHora";
 			this->dtpHora->ShowUpDown = true;
 			this->dtpHora->Size = System::Drawing::Size(93, 20);
@@ -1087,7 +1184,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(19, 53);
+			this->label5->Location = System::Drawing::Point(19, 83);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(33, 13);
 			this->label5->TabIndex = 5;
@@ -1095,7 +1192,7 @@ private: System::Windows::Forms::Label^ label24;
 			// 
 			// dtpFecha
 			// 
-			this->dtpFecha->Location = System::Drawing::Point(68, 13);
+			this->dtpFecha->Location = System::Drawing::Point(68, 43);
 			this->dtpFecha->Name = L"dtpFecha";
 			this->dtpFecha->Size = System::Drawing::Size(200, 20);
 			this->dtpFecha->TabIndex = 4;
@@ -1103,7 +1200,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(19, 116);
+			this->label7->Location = System::Drawing::Point(19, 146);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(56, 13);
 			this->label7->TabIndex = 3;
@@ -1112,7 +1209,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(19, 86);
+			this->label6->Location = System::Drawing::Point(19, 116);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(84, 13);
 			this->label6->TabIndex = 2;
@@ -1121,7 +1218,7 @@ private: System::Windows::Forms::Label^ label24;
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(19, 19);
+			this->label4->Location = System::Drawing::Point(19, 49);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(40, 13);
 			this->label4->TabIndex = 0;
@@ -1555,6 +1652,28 @@ private: System::Windows::Forms::Label^ label24;
 			this->dgvUsuarios->Size = System::Drawing::Size(677, 506);
 			this->dgvUsuarios->TabIndex = 0;
 			// 
+			// label31
+			// 
+			this->label31->AutoSize = true;
+			this->label31->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label31->Location = System::Drawing::Point(7, 9);
+			this->label31->Name = L"label31";
+			this->label31->Size = System::Drawing::Size(176, 18);
+			this->label31->TabIndex = 27;
+			this->label31->Text = L"Administrar Inventario:";
+			// 
+			// label32
+			// 
+			this->label32->AutoSize = true;
+			this->label32->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label32->Location = System::Drawing::Point(6, 12);
+			this->label32->Name = L"label32";
+			this->label32->Size = System::Drawing::Size(149, 18);
+			this->label32->TabIndex = 28;
+			this->label32->Text = L"Registrar Reserva:";
+			// 
 			// PanelOperaciones
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1687,6 +1806,11 @@ private: System::Void button2_Click_1(System::Object^ sender, System::EventArgs^
 		//Extraemos los valores de los controles
 		int numP = System::Convert::ToInt32(txtNumPersonas->Text);
 		int idM = System::Convert::ToInt32(txtIdMesa->Text);
+
+		if (numP <= 0 || numP > 10) {
+			MessageBox::Show("El límite es de 1 a 10 personas por reserva.", "Aviso", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			return;
+		}
 		// Extraemos la fecha con el formato deseado (DD/MM/AAAA)
 		String^ fechaFormateada = dtpFecha->Value.ToString("dd/MM/yyyy");
 		// Extraemos la hora con formato (HH:MM)
@@ -2159,6 +2283,36 @@ private: System::Void btnEliminarPlato_Click(System::Object^ sender, System::Eve
 	}
 	catch (System::FormatException^) {
 		MessageBox::Show("El ID debe ser un número entero.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+}
+private: System::Void btnLiberarMesa_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (txtMesaLiberar->Text == "") {
+		MessageBox::Show("Ingrese el ID de la mesa a liberar.", "Aviso", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+		return;
+	}
+
+	try {
+		int idMesa = System::Convert::ToInt32(txtMesaLiberar->Text);
+
+		// Cambiar el estado directamente usando tu funcion del backend
+		cambiarEstadoMesa(lstMesas, idMesa, "Libre");
+
+		// Registrar en el historial
+		std::string desc = "Se libero manualmente la Mesa #" + std::to_string(idMesa);
+		TpHistorial tempHist = pilaHist;
+		registrarAccion(tempHist, idAccGlobal, desc);
+		pilaHist = tempHist;
+		idAccGlobal++;
+
+		// Actualizar la vista visual
+		cargarMesas();
+		cargarHistorial();
+		txtMesaLiberar->Clear();
+
+		MessageBox::Show("Mesa " + idMesa + " liberada con éxito.", "Éxito", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+	catch (System::FormatException^) {
+		MessageBox::Show("El ID de la mesa debe ser un número entero.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 }
 };

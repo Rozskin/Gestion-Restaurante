@@ -106,6 +106,19 @@ namespace SistemaRestauranteGUI {
 			listaMesas = cargarMesas(listaMesas);
 			listaReservas = cargarReservas(listaReservas, listaMesas);
 
+			//Continua desde el último valor guardado
+			TpReserva r = listaReservas;
+			while (r != NULL) {
+				if (r->id >= idReservaActual) idReservaActual = r->id + 1;
+				r = r->sig;
+			}
+
+			TpHistorial h = pilaAcciones;
+			while (h != NULL) {
+				if (h->idAccion >= idAccGlobal) idAccGlobal = h->idAccion + 1;
+				h = h->sig;
+			}
+
 			//(Solo si los .txt están vacíos)
 			if (listaUsuarios == NULL) {
 				listaUsuarios = registrarUsuario(listaUsuarios, 1, "admin", "admin123", "Administrador");
@@ -580,6 +593,11 @@ private: System::Void btnUnirseCola_Click(System::Object^ sender, System::EventA
 		std::string nom = msclr::interop::marshal_as<std::string>(txtNombreCli->Text);
 		int numP = System::Convert::ToInt32(txtPersonasCli->Text);
 
+		if (numP <= 0 || numP > 10) {
+			MessageBox::Show("El límite es de 1 a 10 personas por reserva.", "Aviso", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			return;
+		}
+
 		TpEspera tempFrente = frenteEspera;
 		TpEspera tempFinal = finalEspera;
 
@@ -610,6 +628,11 @@ private: System::Void btnReservarCli_Click(System::Object^ sender, System::Event
 		//Extraemos los valores
 		int numP = System::Convert::ToInt32(txtNumPersonas->Text);
 		int idM = System::Convert::ToInt32(txtMesaReservaCli->Text);
+
+		if (numP <= 0 || numP > 10) {
+			MessageBox::Show("El límite es de 1 a 10 personas por reserva.", "Aviso", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			return;
+		}
 
 		//Formateamos Fecha y Hora
 		String^ fechaFormateada = dtpFechaReservaCli->Value.ToString("dd/MM/yyyy");
